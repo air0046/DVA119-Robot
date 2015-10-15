@@ -50,9 +50,11 @@ void MotorDrive::UpdateSpeed(/* arguments */) {
   RightMotor->setSpeed(_RightMotorSpeed);
 }
 
-void MotorDrive::TurnRobot(float angle, int speed){
-// Gradualy going to start writing code here the folowing weaks.
-// This whill be a wrapper of setSpeed functinon.
+void MotorDrive::TurnRobot(float target_rad, int rad_sec){
+  // Gradualy going to start writing code here the folowing weaks.
+  // This whill be a wrapper of setSpeed functinon.
+  float rad = 0;
+  
 }
 
 String MotorDrive::toString(){

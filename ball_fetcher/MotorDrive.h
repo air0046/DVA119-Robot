@@ -11,6 +11,7 @@
 
 class MotorDrive{
   private:
+    // Adafruit variables do not touch.
     Adafruit_MotorShield AFMS = Adafruit_MotorShield();
   	Adafruit_DCMotor *LeftMotor = AFMS.getMotor(1);
   	Adafruit_DCMotor *RightMotor = AFMS.getMotor(2);
@@ -20,12 +21,15 @@ class MotorDrive{
     int _RightMotorSpeed;
     int _LeftMotorDirection;
     int _RightMotorDirection;
+    // Arbetrary information about the robot
+    int _WeelCircumference = 207; //mm
+    int _RobotAxelRadius = 155/2; //mm
 
   public:
     void start();
     void setSpeed(int left, int right);
     void stopAl();
-    void TurnRobot(float angle, int speed);          // This one is defined from -pi to pi
+    void TurnRobot(float target_rad, int rad_sec);          // This one is defined from -pi to pi
     String toString();
 };
 
