@@ -1,0 +1,110 @@
+// Include libraries:
+#include <Adafruit_MotorShield.h>
+#include <lenlib.h>
+#include <Wire.h>
+#include <Servo.h>
+
+// Create Motors object
+myMotors Motors;
+// Create Servo object
+Servo myServo;
+
+// Define pins for Ultrasonic distance sensor
+#define echoPin 12
+#define trigPin 13
+
+int pos = 0;
+long distance = 0;
+
+void setup() {
+  Serial.begin(9600); // set up Serial connection at 9600 bps
+
+  Motors.beginMotors();   // Start motors
+  myServo.attach(3); // Start servo
+
+  // Set pin modes for Ultrasonic distance sensor
+  pinMode(echoPin, INPUT);
+  pinMode(trigPin, OUTPUT);
+
+  delay(1000);
+}
+
+void loop() {
+  //Measure the distance to the left, straight ahead and to the right.
+  // for(int i = 1; i < 4; i++){
+  //   sensDirDist(i);
+  //   delay(500);
+  // }
+  myServo.write(0);
+  delay(2000);
+  myServo.write(90);
+  delay(2000);
+  myServo.write(180);
+  // for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
+  //   // in steps of 1 degree
+  //   myServo.write(pos);              // tell servo to go to position in variable 'pos'
+  //   delay(500);                       // waits 15ms for the servo to reach the position
+  // }
+  // for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+  //   myServo.write(pos);              // tell servo to go to position in variable 'pos'
+  //   delay(15);                       // waits 15ms for the servo to reach the position
+  // }
+
+}
+
+// This function takes an int parameter which can be a value of 1, 2 or 3.
+//  If the value is 1, rotate servo left and measure the distance.
+//  If the value is 2, measure straight forward, and if 3 measure to the right.
+long sensDirDist(int dir) {
+  long distance;
+
+  // Measure distance to the left, 0 rad's or 0 degrees.
+  if(dir == 1){
+    myServo.write(0);
+    delay(500);
+    distance = measureDist();
+    Serial.print("Left: ");
+    Serial.println(distance);
+  }
+  // Measure distance straight ahead, pi/2 rad's or 90 degrees.
+  else if(dir == 2){
+    myServo.write(90);
+    delay(500);
+    distance = measureDist();
+    Serial.print("Straight: ");
+    Serial.println(distance);
+  }
+  // Measure distance to the right, pi rad's or 180 degrees.
+  else if(dir == 3){
+    myServo.write(180);
+    delay(500);
+    distance = measureDist();
+    Serial.print("Right: ");
+    Serial.println(distance);
+  }
+  // Return the distance
+  return distance;
+}
+
+// Function for measuring the distance of the Ultrasonic sensor
+long measureDist(){
+  // Variables for duration and distance.
+  long duration, distance = 0;
+
+  // trigPin/echoPin cycle:
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+
+  digitalWrite(trigPin,LOW);
+
+  duration = pulseIn(echoPin, HIGH);
+
+  // Calculate distance in cm. This is based on the speed of sound.
+  distance = (duration/2) / 29.1;
+
+  // Return distance value
+  return distance;
+}

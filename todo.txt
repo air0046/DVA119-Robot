@@ -1,0 +1,42 @@
+TODO för Projektarbete: Robot
+
+# Att göra:
+  * Tynga ner axeln
+  * Montera accelerometer.
+  * Montera bollkorg 
+  * Hitta användning för den 4:e reflexsensorn
+
+# Avklarat:
+  * Smörja ball caster
+  * Chassi monterat
+  * V/H-motorer monterade
+  * Arduino UNO monterad
+  * 3st reflexsensorer fram monterade
+  * 3:e hjulet bak monterat (ball caster)
+  * Sänka fronten på roboten så att Linjesensorerna kommer närmare marken. (<8mm)
+
+BANA 1 - Följa tejp
+
+  Beskrivning:
+    
+    Roboten ska ensam kunna följa en tejp på golvet.
+    
+  Status
+   
+   Ett första utkast av kod gjort. Roboten kan följa en svårare bana, men mer optimeringar krävs.
+  
+  Todo
+   
+   Skapa ny hållare (plexi) till linjeföljarna, vilket möjliggör justering i sidled av yttre linjeföljarna.
+  
+BANA 2 - Labyrint
+
+ Beskrivning:
+    
+    
+   
+
+BANA 3 - Plocka upp boll, välja mellan röd eller blå boll
+
+
+BANA 4 - Tibetanska geten

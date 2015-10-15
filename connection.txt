@@ -1,0 +1,58 @@
+# Kopplingsdiagram.
+
+## OBS! Motorshield is using:
+    Analog  A4
+            A5
+    Digital 9
+            10
+
+## Motorer.
+Höger M2
+    M --(Röd)-->    M2(+)
+      --(Svart)-->  M2(gnd)
+Vänster M1
+    M --(Grön)-->   M1(gnd)
+      --(Gul)-->    M1(+)
+
+## Sensorer
+    Analoga linjesensorer (QRE1113)
+        Sens0   (Vänster)
+            Out --(Gul)-->                  D5
+            Vcc --(Röd)----(Deck)-->        5V
+            Gnd --(Svart)----(Deck)-->      Gnd
+        Sens1   (Mitten)
+            Out --(Blå)-->                  D6
+            Vcc --(Röd)----(Deck)-->        5V
+            Gnd --(Svart)----(Deck)-->      Gnd
+        Sens2   (Höger)
+            Out --(Grön)-->                 D7
+            Vcc --(Röd)----(Deck)-->        5V
+            Gnd --(Svart)----(Deck)-->      Gnd
+        Sens3   (inte innkopplad)
+            Out --()-->
+            Vcc --(Röd)----(Deck)-->        5V
+            Gnd --(Svart)----(Deck)-->      Gnd
+
+    Ultra sonic distance sensor (HC-RS04) - Sensing objects on the LEFT
+        HC-RS04    (rotating)
+            Vcc     --(Röd)--(Deck)-->      5V
+            Trig    --(Blå)-->              D3
+            Echo    --(Grön)-->             D4
+            Gnd     --(Svart)--(Deck)-->    Gnd
+            
+    Ultra sonic distance sensor (HC-RS04) - Sensing objects on the RIGHT
+        HC-RS04    (rotating)
+            Vcc     --(Röd)--(Deck)-->      5V
+            Trig    --(Blå)-->              D8
+            Echo    --(Grön)-->             D9
+            Gnd     --(Svart)--(Deck)-->    Gnd
+
+    Servo for the ball fetcher
+        myServo
+                                            Servo2 Port on Motor Shield
+
+    accelerometer   (ADXL337) web  https://www.sparkfun.com/products/12786
+        Acc1
+            vcc     --(grön)-->             3.3v
+            gnd     --(Svart)--(Deck)-->    Gnd
+            x

@@ -1,0 +1,141 @@
+// Include libraries:
+#include <Adafruit_MotorShield.h>
+#include <lenlib.h>
+#include <Wire.h>
+#include <Servo.h>
+
+// Create Motors object
+myMotors Motors;
+// Create Servo object
+Servo myServo;
+
+// Define pins for Ultrasonic distance sensor
+#define echoPin 3
+#define trigPin 4
+
+// Minimum distance to obstacle variable
+int dangerDist = 15;
+
+// This is the motor speed value, (0-255)
+int speedVal = 40; // 60 seem to be a good value
+// Variable that works as a factor regulating the turn speed. i.e 1.8*spedVal = turnspeed
+float turnMulti = 1.8;
+// Delay value called after motors been running:
+int delVal = 0;
+
+int dir = 0;
+
+
+void setup() {
+  Serial.begin(9600); // set up Serial connection at 9600 bps
+
+  Motors.beginMotors();   // Start motors
+
+  myServo.attach(9); // Start servo
+  myServo.write(90);  // Center the servo for the distance sensor
+
+  // Set pin modes for Ultrasonic distance sensor
+  pinMode(echoPin, INPUT);
+  pinMode(trigPin, OUTPUT);
+
+  delay(1000);
+}
+
+void loop() {
+  dir = scanSurr();
+  Serial.println(dir);
+
+  if(dir == 2){
+    Motors.runMotor(1,FORWARD,speedVal);
+    Motors.runMotor(2,FORWARD,speedVal);
+    delay(delVal);
+  }
+  else if(dir == 1){
+    Motors.runMotor(1,FORWARD,(turnMulti*speedVal));
+    Motors.runMotor(2,FORWARD,speedVal);
+    delay(delVal);
+  }
+  else if(dir == 3){
+    Motors.runMotor(1,FORWARD,speedVal);
+    Motors.runMotor(2,FORWARD,(turnMulti*speedVal));
+    delay(delVal);
+  }
+  else{
+    Motors.runMotor(1,FORWARD,0);
+    Motors.runMotor(2,FORWARD,0);
+  }
+
+}
+
+// This function takes an int parameter which can be a value of 1, 2 or 3.
+//  If the value is 1, rotate servo left and measure the distance.
+//  If the value is 2, measure straight forward, and if 3 measure to the right.
+int scanSurr() {
+  int dir = 2;
+
+  long distanceL = 0;
+  long distanceF = 0;
+  long distanceR = 0;
+
+  // Measure distance to the left, 0 degrees.
+  myServo.write(25);
+  delay(300);
+  distanceL = measureDist();
+  Serial.print("Left: ");
+  Serial.print(distanceL);
+
+  // Measure distance straight ahead, 90 degrees.
+  myServo.write(90);
+  delay(300);
+  distanceF = measureDist();
+  Serial.print("\t\tStraight: ");
+  Serial.print(distanceF);
+
+  // Measure distance to the right, 180 degrees.
+  myServo.write(160);
+  delay(300);
+  distanceR = measureDist();
+  Serial.print("\t\tRight: ");
+  Serial.println(distanceR);
+
+  // If there's no obstacles ahead, go forward.
+  if(distanceF > dangerDist){
+    dir = 2;
+  }
+  // If there's obstacles to the left, go right
+  else if(distanceL < dangerDist){
+    dir = 1;
+  }
+  // If there's obstacles to the right, go left
+  else if(distanceR < dangerDist){
+    dir = 3;
+  }
+  else{
+  dir = 2;
+  }
+  return dir;
+}
+
+// Function for measuring the distance of the Ultrasonic sensor
+long measureDist(){
+  // Variables for duration and distance.
+  long duration, distance = 0;
+
+  // trigPin/echoPin cycle:
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin,LOW);
+
+  duration = pulseIn(echoPin, HIGH);
+
+  // Calculate distance in cm. This is based on the speed of sound.
+  distance = (duration/2) / 29.1;
+  if(distance >= 200){
+    distance = 199;
+    return distance;
+  }
+  else
+  return distance;  // Return distance value
+}
