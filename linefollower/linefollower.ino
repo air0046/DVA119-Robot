@@ -1,3 +1,9 @@
+// TODO:
+//
+//    * Weigh down axis
+//    * Build functions instead
+//    * Measure three times and use average
+
 // Include libraries:
 #include <Adafruit_MotorShield.h>
 #include <lenlib.h>
@@ -17,14 +23,14 @@ int speedVal = 70; // 60 seem to be a good value
 //int turnSpeed = 60;
 
 // Variable that works as a factor regulating the turn speed. i.e 1.8*spedVal = turnspeed
-float turnMulti = 1.8;
+float turnMulti = 1.7;
 
 myMotors Motors;   // Create Motors object
 mySensors Sensors; // Create Sensors object
 
 void setup() {
   Serial.begin(9600); // set up Serial connection at 9600 bps
-    
+
   Motors.beginMotors();   // Start motors
   Sensors.beginSensors(); // Start sensors
 
@@ -49,12 +55,12 @@ void loop() {
   Serial.print("\n");
 
   // if the right sensor is the only sensor that have the value 1, the bot need to compensate by turning right
-  if((leftSensor == 0 && middleSensor == 0 && rightSensor == 1) || (leftSensor == 0 && middleSensor == 1 && rightSensor == 1)) 
+  if((leftSensor == 1 && middleSensor == 0 && rightSensor == 0) || (leftSensor == 1 && middleSensor == 1 && rightSensor == 0))
   {
       Motors.runMotor(1,FORWARD,(turnMulti*speedVal));
-      Motors.runMotor(2,BACKWARD,0);
+      Motors.runMotor(2,FORWARD,0);
       //remove delay
-      delay(delVal);      
+      delay(delVal);
       //if((leftSensor == 0 && middleSensor == 0 && rightSensor == 0) || (leftSensor == 1 && middleSensor == 1 && rightSensor == 1))
 //      {
 //          Motors.runMotor(1,FORWARD,(turnMulti*speedVal));
@@ -63,10 +69,10 @@ void loop() {
 //      else{}
   }
   // if the left sensor is the only sensor that have the value 1, the bot need to compensate by turning left
-  else if((leftSensor == 1 && middleSensor == 0 && rightSensor == 0) || (leftSensor == 1 && middleSensor == 1 && rightSensor == 0)) 
+  else if((leftSensor == 0 && middleSensor == 0 && rightSensor == 1) || (leftSensor == 0 && middleSensor == 1 && rightSensor == 1))
   {
-      Motors.runMotor(1,BACKWARD,0);
       Motors.runMotor(2,FORWARD,(turnMulti*speedVal));
+      Motors.runMotor(1,FORWARD,0);
       //remove delay
       delay(delVal);
       //if((leftSensor == 0 && middleSensor == 0 && rightSensor == 0) || (leftSensor == 1 && middleSensor == 1 && rightSensor == 1))
@@ -88,7 +94,7 @@ void loop() {
       else
       {
         Motors.runMotor(1,FORWARD,speedVal);
-        Motors.runMotor(2,FORWARD,speedVal);    
+        Motors.runMotor(2,FORWARD,speedVal);
       }
       //remove delay
       delay(delVal);
