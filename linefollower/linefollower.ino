@@ -19,8 +19,11 @@ int middleSensor = 0;
 int rightSensor = 0;
 
 // This is the speed value, (0-255)
-int speedVal = 70; // 60 seem to be a good value
+int speedVal = 60; // 60 seem to be a good value
 //int turnSpeed = 60;
+int turnDelay = 0;
+// int containing last action: 0 starting value, 1 fwd, 2 steerLeft, 3 steerRight
+int lastAction = 0;
 
 // Variable that works as a factor regulating the turn speed. i.e 1.8*spedVal = turnspeed
 float turnMulti = 1.7;
@@ -39,6 +42,33 @@ void setup() {
 
 void loop() {
 
+  readSensors();
+
+  // if sensor value = 1, then the sensor is on track
+  if((leftSensor == 0 && middleSensor == 1 && rightSensor == 0))
+  {
+    fwd();
+    lastAction = 1;
+  }
+  // if the right sensor is the only sensor that have the value 1, the bot need to compensate by turning right
+  else if((leftSensor == 0 && middleSensor == 0 && rightSensor == 1))
+  {
+    steerLeft();
+    lastAction = 2;
+  }
+  // if the left sensor is the only sensor that have the value 1, the bot need to compensate by turning left
+  else if((leftSensor == 1 && middleSensor == 0 && rightSensor == 0))
+  {
+    steerRight();
+    lastAction = 3;
+  }
+  else
+  {
+    stop();
+  }
+}
+
+void readSensors(){
   // Read the sensor values:
   leftSensor = Sensors.readReflect0();
   delay(20);
@@ -50,69 +80,43 @@ void loop() {
   Serial.print("Reflect 0: ");Serial.print(leftSensor);
   Serial.print("\tReflect 1: ");Serial.print(middleSensor);
   Serial.print("\tReflect 2: ");Serial.print(rightSensor);
-  Serial.print("\tMotor speed: ");Serial.print(speedVal);
-  //Serial.print("\tTurn speed: ");Serial.print(turnSpeed);
-  Serial.print("\n");
+  Serial.print("\tMotor speed: ");Serial.println(speedVal);
+}
 
-  // if the right sensor is the only sensor that have the value 1, the bot need to compensate by turning right
-  if((leftSensor == 1 && middleSensor == 0 && rightSensor == 0) || (leftSensor == 1 && middleSensor == 1 && rightSensor == 0))
-  {
-      Motors.runMotor(1,FORWARD,(turnMulti*speedVal));
-      Motors.runMotor(2,FORWARD,0);
-      //remove delay
-      delay(delVal);
-      //if((leftSensor == 0 && middleSensor == 0 && rightSensor == 0) || (leftSensor == 1 && middleSensor == 1 && rightSensor == 1))
-//      {
-//          Motors.runMotor(1,FORWARD,(turnMulti*speedVal));
-//          Motors.runMotor(2,BACKWARD,0);;
-//      }
-//      else{}
-  }
-  // if the left sensor is the only sensor that have the value 1, the bot need to compensate by turning left
-  else if((leftSensor == 0 && middleSensor == 0 && rightSensor == 1) || (leftSensor == 0 && middleSensor == 1 && rightSensor == 1))
-  {
-      Motors.runMotor(2,FORWARD,(turnMulti*speedVal));
-      Motors.runMotor(1,FORWARD,0);
-      //remove delay
-      delay(delVal);
-      //if((leftSensor == 0 && middleSensor == 0 && rightSensor == 0) || (leftSensor == 1 && middleSensor == 1 && rightSensor == 1))
-//      {
-//          Motors.runMotor(2,BACKWARD,0);;
-//          Motors.runMotor(2,FORWARD,(turnMulti*speedVal));
-//      }
-//      else{}
-  }
-  // if sensor value = 1, then the sensor is on track
-  else if((leftSensor == 0 && middleSensor == 1 && rightSensor == 0) || (leftSensor == 1 && middleSensor == 1 && rightSensor == 1))
-  {
-      if(middleSensor == 0)
-      {
-        Motors.runMotor(1,BACKWARD,speedVal);
-        Motors.runMotor(2,BACKWARD,speedVal);
-        delay(100);
-      }
-      else
-      {
-        Motors.runMotor(1,FORWARD,speedVal);
-        Motors.runMotor(2,FORWARD,speedVal);
-      }
-      //remove delay
-      delay(delVal);
-  }
-
-  // if none of the sensors have a value 1, the robot probably went too fast and missed the turn. Backup and hope we find the tape again.
-  else if(leftSensor == 0 && middleSensor == 0 && rightSensor == 0)
-  {
-    Motors.runMotor(1,BACKWARD,speedVal);
-    Motors.runMotor(2,BACKWARD,speedVal);
-    delay(80);
-  }
-  else
-  {
-      Motors.runMotor(1,FORWARD,0);
-      Motors.runMotor(2,FORWARD,0);
-  }
-  // test if motors work
-  //Motors.runMotor(1,FORWARD,speedValue);
-  //Motors.runMotor(2,FORWARD,speedValue);
+//
+// Motor functions
+//
+void fwd(){
+  Motors.runMotor(1,FORWARD,speedVal);
+  Motors.runMotor(2,FORWARD,speedVal);
+}
+void rev(){
+  Motors.runMotor(1,BACKWARD,speedVal);
+  Motors.runMotor(2,BACKWARD,speedVal);
+}
+void stop(){
+  Motors.runMotor(1,FORWARD,0);
+  Motors.runMotor(2,FORWARD,0);
+}
+void steerRight(){
+  Motors.runMotor(1,FORWARD,speedVal*turnMulti);
+  Motors.runMotor(2,FORWARD,speedVal);
+}
+void steerLeft(){
+  Motors.runMotor(1,FORWARD,speedVal);
+  Motors.runMotor(2,FORWARD,speedVal*turnMulti);
+}
+void turnLeft(){  // Turn 90 degree LEFT
+  Motors.runMotor(1,BACKWARD,speedVal);
+  Motors.runMotor(2,FORWARD,speedVal);
+  delay(turnDelay);
+  Motors.runMotor(1,FORWARD,0);
+  Motors.runMotor(2,FORWARD,0);
+}
+void turnRight(){   // Turn 90 degrees RIGHT
+  Motors.runMotor(1,FORWARD,speedVal);
+  Motors.runMotor(2,BACKWARD,speedVal);
+  delay(turnDelay);
+  Motors.runMotor(1,FORWARD,0);
+  Motors.runMotor(2,FORWARD,0);
 }
