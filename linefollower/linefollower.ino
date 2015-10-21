@@ -1,8 +1,6 @@
 // TODO:
 //
-//    * Weigh down axis
-//    * Build functions instead
-//    * Measure three times and use average
+//    If there are problems, add a value to turnDelay
 
 // Include libraries:
 #include <Adafruit_MotorShield.h>
@@ -19,7 +17,7 @@ int middleSensor = 0;
 int rightSensor = 0;
 
 // This is the speed value, (0-255)
-int speedVal = 60; // 60 seem to be a good value
+int speedVal = 70; // 60 seem to be a good value
 //int turnSpeed = 60;
 int turnDelay = 0;
 // int containing last action: 0 starting value, 1 fwd, 2 steerLeft, 3 steerRight
@@ -27,6 +25,8 @@ int lastAction = 0;
 
 // Variable that works as a factor regulating the turn speed. i.e 1.8*spedVal = turnspeed
 float turnMulti = 1.7;
+
+int loopDelay = 0;
 
 myMotors Motors;   // Create Motors object
 mySensors Sensors; // Create Sensors object
@@ -48,24 +48,31 @@ void loop() {
   if((leftSensor == 0 && middleSensor == 1 && rightSensor == 0))
   {
     fwd();
+    Serial.println("Forward");
     lastAction = 1;
   }
   // if the right sensor is the only sensor that have the value 1, the bot need to compensate by turning right
   else if((leftSensor == 0 && middleSensor == 0 && rightSensor == 1))
   {
     steerLeft();
+    Serial.println("SteerLeft");
     lastAction = 2;
   }
   // if the left sensor is the only sensor that have the value 1, the bot need to compensate by turning left
   else if((leftSensor == 1 && middleSensor == 0 && rightSensor == 0))
   {
     steerRight();
+    Serial.println("SteerRight");
     lastAction = 3;
   }
   else
   {
-    stop();
+    if(lastAction == 1){fwd();Serial.println("Forward**");}
+    else if(lastAction == 2){steerLeft();Serial.println("SteerLeft**");}
+    else if(lastAction == 3){steerRight();Serial.println("SteerRight**");}
+    else {stop();Serial.println("Stop");}
   }
+  delay(loopDelay);
 }
 
 void readSensors(){
@@ -80,7 +87,8 @@ void readSensors(){
   Serial.print("Reflect 0: ");Serial.print(leftSensor);
   Serial.print("\tReflect 1: ");Serial.print(middleSensor);
   Serial.print("\tReflect 2: ");Serial.print(rightSensor);
-  Serial.print("\tMotor speed: ");Serial.println(speedVal);
+  Serial.print("\tMotor speed: ");Serial.print(speedVal);
+  Serial.print("\tAction: ");
 }
 
 //
