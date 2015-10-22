@@ -11,7 +11,7 @@
 #include <Servo.h>
 
 // Delay value called after motors been running:
-int delVal = 100;
+int delVal = 0;
 
 // Initialize variables for storing the sensor values
 int leftSensor = 0;
@@ -85,7 +85,7 @@ void readSensors(){
   middleSensor = Sensors.readReflect1();
   delay(20);
   rightSensor = Sensors.readReflect2();
-
+  delay(20);
   // Print status of sensors:
   Serial.print("Reflect 0: ");Serial.print(leftSensor);
   Serial.print("\tReflect 1: ");Serial.print(middleSensor);
