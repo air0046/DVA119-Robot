@@ -50,31 +50,32 @@ void loop() {
   if((leftSensor == 0 && middleSensor == 0 && rightSensor == 1))
   {
     steerRight();
-    Serial.println("SteerLeft");
+    Serial.print("SteerLeft");
     lastAction = 2;
   }
   // if the left sensor is the only sensor that have the value 1, the bot need to compensate by turning left
   else if((leftSensor == 1 && middleSensor == 0 && rightSensor == 0))
   {
     steerLeft();
-    Serial.println("SteerRight");
+    Serial.print("SteerRight");
     lastAction = 3;
   }
   // if sensor value = 1, then the sensor is on track
   if((leftSensor == 0 && middleSensor == 1 && rightSensor == 0))
   {
     fwd();
-    Serial.println("Forward");
+    Serial.print("Forward");
     lastAction = 1;
   }
   else
   {
-    if(lastAction == 1){fwd();Serial.println("Forward**");}
-    else if(lastAction == 2){steerLeft();Serial.println("SteerLeft**");}
-    else if(lastAction == 3){steerRight();Serial.println("SteerRight**");}
-    else {stop();Serial.println("Stop");}
+    if(lastAction == 1){fwd();Serial.print("Forward**");}
+    else if(lastAction == 2){steerLeft();Serial.print("SteerLeft**");}
+    else if(lastAction == 3){steerRight();Serial.print("SteerRight**");}
+    //else {stop();Serial.println("Stop");}
   }
   delay(loopDelay);
+  Serial.println();
 }
 
 void readSensors(){
