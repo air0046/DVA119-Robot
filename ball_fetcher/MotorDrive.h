@@ -29,7 +29,7 @@ class MotorDrive{
     void start();
     void setSpeed(int left, int right);
     void stopAl();
-    void TurnRobot(float target_rad, int rad_sec);          // This one is defined from -pi to pi
+    void TurnRobot(float target_grad);          // This one is defined from -pi to pi
     String toString();
 };
 

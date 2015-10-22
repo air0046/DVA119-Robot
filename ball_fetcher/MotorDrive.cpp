@@ -38,23 +38,40 @@ void MotorDrive::setSpeed(int left, int right){
     _RightMotorDirection = 1;       // Forward
   }
   _LeftMotorSpeed=abs(left);        // absulute value in to speed vaiabels.
-  _RightMotorSpeed=abs(right);
+  _RightMotorSpeed=abs(right * 0.99);
+  //Serial.println("End setSpeed()");
   UpdateSpeed();
+  //Serial.println("End setSpeed()");
 }
 
 void MotorDrive::UpdateSpeed(/* arguments */) {
   // Magic...
+  //Serial.println("UpdateSpeed");
   LeftMotor->run(_LeftMotorDirection);
   LeftMotor->setSpeed(_LeftMotorSpeed);
   RightMotor->run(_RightMotorDirection);
   RightMotor->setSpeed(_RightMotorSpeed);
+  //Serial.println("End UpdateSpeed");
 }
 
-void MotorDrive::TurnRobot(float target_rad, int rad_sec){
+void MotorDrive::TurnRobot(float target_grad){
   // Gradualy going to start writing code here the folowing weaks.
   // This whill be a wrapper of setSpeed functinon.
-  float rad = 0;
-  
+  //Serial.println(target_grad);
+  int speed = 100;
+  int delaydeg = 12;
+  if (target_grad > 1.0){
+    Serial.println("Turn +");
+    setSpeed(speed, (-1)*speed);
+  } else if (target_grad < -1.0){
+    Serial.println("Turn -");
+    setSpeed((-1)*speed, speed);
+  } else {
+    setSpeed(0, 0);
+    target_grad = 0,0;
+  }
+  delay((int)abs(target_grad) * delaydeg );  // 10ms per grad
+  stopAl();
 }
 
 String MotorDrive::toString(){

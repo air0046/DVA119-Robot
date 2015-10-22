@@ -5,23 +5,25 @@
 //#include <WProgram.h> //  It is very important to remember this! note that
 //                          if you are using Arduino 1.0 IDE, change
 #include <Arduino.h>
+#include "adArray.h"
 
 
 class LineSensors {
   private:
     // Values from sensors
-    int _LeftValue;
-    int _MiddValue;
-    int _RightValue;
-    // Conected pnins.
-    int _LeftPin;
-    int _RightPin;
-    int _MiddPin;
+    intArray _leftArray;
+    intArray _midArray;
+    intArray _rightArray;
+    // Conected pnins.  (7, 6, 5);
+    int _LeftPin = 7;
+    int _RightPin = 6;
+    int _MiddPin = 5;
+
   public:
-    LineSensors(int LeftPin, int MiddPin, int RightPin);
+    //LineSensors(int LeftPin, int MiddPin, int RightPin);
     void start();
     void readSens();
-    float direction();
+    int direction();
     String toString();
 };
 #endif
