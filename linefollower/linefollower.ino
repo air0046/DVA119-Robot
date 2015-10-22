@@ -24,7 +24,7 @@ int turnDelay = 0;
 int lastAction = 0;
 
 // Variable that works as a factor regulating the turn speed. i.e 1.8*spedVal = turnspeed
-float turnMulti = 1.7;
+float turnMulti = 1.6;
 
 int loopDelay = 0;
 
@@ -44,26 +44,26 @@ void loop() {
 
   readSensors();
 
-  // if sensor value = 1, then the sensor is on track
-  if((leftSensor == 0 && middleSensor == 1 && rightSensor == 0))
-  {
-    fwd();
-    Serial.println("Forward");
-    lastAction = 1;
-  }
   // if the right sensor is the only sensor that have the value 1, the bot need to compensate by turning right
-  else if((leftSensor == 0 && middleSensor == 0 && rightSensor == 1))
+  if((leftSensor == 0 && middleSensor == 0 && rightSensor == 1))
   {
-    steerLeft();
+    steerRight();
     Serial.println("SteerLeft");
     lastAction = 2;
   }
   // if the left sensor is the only sensor that have the value 1, the bot need to compensate by turning left
   else if((leftSensor == 1 && middleSensor == 0 && rightSensor == 0))
   {
-    steerRight();
+    steerLeft();
     Serial.println("SteerRight");
     lastAction = 3;
+  }
+  // if sensor value = 1, then the sensor is on track
+  if((leftSensor == 0 && middleSensor == 1 && rightSensor == 0))
+  {
+    fwd();
+    Serial.println("Forward");
+    lastAction = 1;
   }
   else
   {
@@ -97,22 +97,27 @@ void readSensors(){
 void fwd(){
   Motors.runMotor(1,FORWARD,speedVal);
   Motors.runMotor(2,FORWARD,speedVal);
+  delay(delVal);
 }
 void rev(){
   Motors.runMotor(1,BACKWARD,speedVal);
   Motors.runMotor(2,BACKWARD,speedVal);
+  delay(delVal);
 }
 void stop(){
   Motors.runMotor(1,FORWARD,0);
   Motors.runMotor(2,FORWARD,0);
+  delay(delVal);
 }
 void steerRight(){
   Motors.runMotor(1,FORWARD,speedVal*turnMulti);
   Motors.runMotor(2,FORWARD,speedVal);
+  delay(delVal);
 }
 void steerLeft(){
   Motors.runMotor(1,FORWARD,speedVal);
   Motors.runMotor(2,FORWARD,speedVal*turnMulti);
+  delay(delVal);
 }
 void turnLeft(){  // Turn 90 degree LEFT
   Motors.runMotor(1,BACKWARD,speedVal);
