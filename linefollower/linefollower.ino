@@ -1,5 +1,7 @@
 // TODO:
 //
+//    0.x*speedVal when steering?
+//
 //    If there are problems, add a value to turnDelay
 
 // Include libraries:
@@ -110,13 +112,13 @@ void stop(){
   delay(delVal);
 }
 void steerRight(){
-  Motors.runMotor(1,FORWARD,speedVal*turnMulti);
-  Motors.runMotor(2,FORWARD,speedVal);
+  Motors.runMotor(1,FORWARD,speedVal);
+  Motors.runMotor(2,FORWARD,0);
   delay(delVal);
 }
 void steerLeft(){
-  Motors.runMotor(1,FORWARD,speedVal);
-  Motors.runMotor(2,FORWARD,speedVal*turnMulti);
+  Motors.runMotor(1,FORWARD,0);
+  Motors.runMotor(2,FORWARD,speedVal);
   delay(delVal);
 }
 void turnLeft(){  // Turn 90 degree LEFT
