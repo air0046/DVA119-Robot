@@ -1,9 +1,3 @@
-// TODO:
-//
-//    0.x*speedVal when steering?
-//
-//    If there are problems, add a value to turnDelay
-
 // Include libraries:
 #include <Adafruit_MotorShield.h>
 #include <lenlib.h>
