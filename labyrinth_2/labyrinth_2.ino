@@ -17,7 +17,7 @@ myMotors Motors;
 #define irSensorPin A0
 
 // Minimum distance to left or right obstacle variable
-int dangerSideDist = 10;
+int dangerSideDist = 4;
 // Upper threshold, safe distance side value
 int safeSideDist = 20;
 
@@ -33,7 +33,7 @@ long distanceL, distanceF, distanceR = 0;
 // This is the motor speed value, (0-255)
 int speedVal = 80; // 60 seem to be a good value
 // Variable that works as a factor regulating the turn speed. i.e 1.8*speedVal = turnspeed
-float turnMulti = 1.3;
+// float turnMulti = 1.3;
 // Delay value called after motors been running:
 int delVal = 0;
 // Delay value used when turning 90 degrees
@@ -118,10 +118,13 @@ void parryObstacle() {
 //  are any obstacles nearby.
 void parseInputs(){
 
-  distanceF = frontSensorRead();
-  distanceL = leftSensorRead();
-  distanceR = rightSensorRead();
+  distanceF = 0;frontSensorRead();
+  distanceL = 0;leftSensorRead();
+  distanceR = 0; rightSensorRead();
 
+  for(i = 0; i <){
+
+  }
   if (distanceF > dangerFrontDist) sensorHitF = true;
   else sensorHitF = false;
 
@@ -148,9 +151,15 @@ void parseInputs(){
 
 // Function for measuring the distance using the LEFT Ultrasonic sensor
 long leftSensorRead(){
+  int sum = 0;
+  int avg = 0;
+  int numi = 0;
+
+  for(i = 0; i < numi; i++){
+    sum+=analogRead();
+  }
   // Variables for duration and distance.
   long duration, distance = 0;
-
   // Left distance sensor, trigPin/echoPin cycle:
   digitalWrite(trigPinL, LOW);
   delayMicroseconds(2);
@@ -219,13 +228,21 @@ void stop(){
   Motors.runMotor(2,FORWARD,0);
 }
 void steerRight(){
-  Motors.runMotor(1,FORWARD,speedVal*turnMulti);
-  Motors.runMotor(2,FORWARD,speedVal);
+  Motors.runMotor(1,FORWARD,speedVal);
+  Motors.runMotor(2,FORWARD,0);
 }
 void steerLeft(){
-  Motors.runMotor(1,FORWARD,speedVal);
-  Motors.runMotor(2,FORWARD,speedVal*turnMulti);
+  Motors.runMotor(1,FORWARD,0);
+  Motors.runMotor(2,FORWARD,speedVal);
 }
+// void steerRight(){
+//   Motors.runMotor(1,FORWARD,speedVal*turnMulti);
+//   Motors.runMotor(2,FORWARD,speedVal);
+// }
+// void steerLeft(){
+//   Motors.runMotor(1,FORWARD,speedVal);
+//   Motors.runMotor(2,FORWARD,speedVal*turnMulti);
+// }
 void turnLeft(){  // Turn 90 degree LEFT
   Motors.runMotor(1,BACKWARD,speedVal);
   Motors.runMotor(2,FORWARD,speedVal);
