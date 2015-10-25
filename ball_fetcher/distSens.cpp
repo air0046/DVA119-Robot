@@ -6,11 +6,7 @@ void distSens::readDistance(){
   int dist = 0;
 
   for (int i = 0; i < it; i++){
-    //Serial.println("readDistance");
     delay(20);
-    //dist = map(analogRead(_pin), 1, 133, 100 , 1);
-    // inget Framför dist = 1
-    // Precis framför dist = 1300
     dist = analogRead(_pin);
   }
 

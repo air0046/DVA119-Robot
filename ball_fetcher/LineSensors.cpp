@@ -26,8 +26,22 @@ int LineSensors::direction(){
   // The method returns a value from -pi to +pi if and only if nott all sensors
   // have the same value in case 1 1 1 and 0 0 0 it returns a value out side the range.
   // where
+  int dir = 0;
+  dir = _leftArray.sum() - _rightArray.sum();
+  return dir;
+
+}
+
+int LineSensors::speed(){
+  return _midArray.sum();
+}
 
 
+int LineSensors::left(){
+  return _leftArray.sum();
+}
+int LineSensors::right(){
+  return _rightArray.sum();
 }
 
 String LineSensors::toString(){
@@ -41,5 +55,17 @@ String LineSensors::toString(){
   temp += _rightArray.sum();
   temp += " ] direction= ";
 
+  return temp;
+}
+
+String LineSensors::rawArray(){
+  String temp = "";
+  temp = "rawArray l[";
+  temp += _leftArray.raw();
+  temp += "] m[";
+  temp += _midArray.raw();
+  temp += "] r[";
+  temp += _rightArray.raw();
+  temp += "]";
   return temp;
 }

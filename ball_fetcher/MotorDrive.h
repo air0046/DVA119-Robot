@@ -24,6 +24,8 @@ class MotorDrive{
     // Arbetrary information about the robot
     int _WeelCircumference = 207; //mm
     int _RobotAxelRadius = 155/2; //mm
+    int _maxSpeed = 250;
+    int _minSpeed = 60;
 
   public:
     void start();

@@ -27,6 +27,7 @@ void MotorDrive::stopAl(/* arguments */) {
 void MotorDrive::setSpeed(int left, int right){
   // as the name sugiest this is my implimintation of lenlibs runnmotor.
   // The functinon takes positeve an negative numbers and based on that it runns the motors ether forward or Backward.
+
   if (left < 0){
     _LeftMotorDirection = 2;        // Backward
   } else {
@@ -37,11 +38,23 @@ void MotorDrive::setSpeed(int left, int right){
   } else {
     _RightMotorDirection = 1;       // Forward
   }
-  _LeftMotorSpeed=abs(left);        // absulute value in to speed vaiabels.
-  _RightMotorSpeed=abs(right * 0.99);
+  left = abs(left);                 // absulute value in to speed vaiabels.
+  right = abs(right);
+  if (left > _maxSpeed){
+    left = _maxSpeed;
+  } else if (left < _minSpeed && left > 4){
+    left = _minSpeed;
+  }
+  if (right > _maxSpeed){
+    right = _maxSpeed;
+  } else if (right < _minSpeed && right > 4){
+    right = _minSpeed;
+  }
+  _LeftMotorSpeed= left;
+  _RightMotorSpeed= right * 0.99;
   //Serial.println("End setSpeed()");
   UpdateSpeed();
-  //Serial.println("End setSpeed()");
+  //Serial.println("End UpdateSpeed()");
 }
 
 void MotorDrive::UpdateSpeed(/* arguments */) {

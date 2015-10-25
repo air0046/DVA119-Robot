@@ -5,7 +5,7 @@ void intArray::push(int value){
   for (int i = 0; i < _arraySize ; i++){
       _array[i] = _array[i + 1];
   }
-  _array[_arraySize] = value;
+  _array[_arraySize-1] = value;
 }
 
 int intArray::sum(){
@@ -17,4 +17,26 @@ int intArray::sum(){
 }
 int intArray::avrage(){
   return ((sum())/_arraySize);
+}
+
+String intArray::toString(){
+  String temp = "";
+  temp = "intArray [";
+  for (int i = 0; i < _arraySize; i++){
+    temp += _array[i];
+    temp += " ";
+  }
+  temp += "] Sum=";
+  temp += sum();
+  return temp;
+}
+
+String intArray::raw(){
+  String temp = "";
+  temp = "intArray [";
+  for (int i = 0; i < _arraySize; i++){
+    temp += _array[i];
+    temp += ",";
+  }
+  return temp;
 }

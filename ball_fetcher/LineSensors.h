@@ -16,14 +16,18 @@ class LineSensors {
     intArray _rightArray;
     // Conected pnins.  (7, 6, 5);
     int _LeftPin = 7;
-    int _RightPin = 6;
-    int _MiddPin = 5;
+    int _RightPin = 5;
+    int _MiddPin = 6;
 
   public:
     //LineSensors(int LeftPin, int MiddPin, int RightPin);
     void start();
     void readSens();
     int direction();
+    int speed();
+    int left();
+    int right();
     String toString();
+    String rawArray();
 };
 #endif

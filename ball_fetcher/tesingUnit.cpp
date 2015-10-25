@@ -4,12 +4,14 @@
 #include "MotorDrive.h"
 #include "boll.h"
 #include "distSens.h"
+#include "adArray.h"
+#include "LineSensors.h"
 
 void motorTest_back_and_forward(){
   while (buttonA()){
     MotorDrive motors;
     motors.start();
-    motors.setSpeed(120, 120);            // Forward
+    motors.setSpeed(20 , -40);            // Forward
     Serial.print("Forward");
     Serial.println(motors.toString());
     delay(2000);
@@ -134,7 +136,58 @@ void distSens_test_dist(){
 }
 
 void ballTest_tellBall(){
+  while (buttonA) {
+    /* code */
 
+  }
+}
+
+void adArray_intArray(){
+  intArray testInt;
+  delay(1000);
+  Serial.println(testInt.toString());
+  int i = 1;
+  while (buttonA) {
+    /* code */
+
+    testInt.push(10 * ( i ) );
+    Serial.println(testInt.toString());
+    i ++;
+    delay(2000);
+  }
+}
+
+void LineSensors_test_raw(){
+  LineSensors line;
+  while (buttonA) {
+    /* code */
+    line.readSens();
+    Serial.println(line.rawArray());
+    delay(500);
+  }
+}
+
+void LineSensors_test(){
+  LineSensors line;
+  while (buttonA) {
+    /* code */
+    line.readSens();
+    Serial.println(line.toString());
+    delay(50);
+  }
+}
+
+void LineSensors_test_dir(){
+  LineSensors line;
+  while (buttonA) {
+    /* code */
+    line.readSens();
+    Serial.print("dir=");
+    Serial.print(line.direction());
+    Serial.print(" speed");
+    Serial.println(line.speed());
+    delay(500);
+  }
 }
 
 bool buttonA (){
