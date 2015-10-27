@@ -6,6 +6,7 @@
 #include "distSens.h"
 #include "adArray.h"
 #include "LineSensors.h"
+#include <Servo.h>
 
 void motorTest_back_and_forward(){
   while (buttonA()){
@@ -192,6 +193,27 @@ void LineSensors_test_dir(){
 
 bool buttonA (){
   return true;
+}
+
+void Test_servo(){
+  Servo serv;
+  int angle = 0;
+  serv.attach(9);
+  while(true){
+    angle = random(0, 255);
+    Serial.println(angle);
+    serv.write(angle);
+    delay(4000);
+
+  }
+}
+
+void test_extra_sensor(){
+  while ( true ) {
+    /* code */
+    Serial.println(digitalRead(13));
+  }
+
 }
 
 #endif

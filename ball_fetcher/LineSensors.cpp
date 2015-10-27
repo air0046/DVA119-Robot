@@ -21,6 +21,25 @@ void LineSensors::readSens(){
   _rightArray.push(digitalRead(_RightPin));
 }
 
+int LineSensors::raw(int LineSens){
+  int value = 0;
+  switch (LineSens){
+    case 0:
+      value =  digitalRead(_LeftPin);
+      break;
+    case 1:
+      value =  digitalRead(_MiddPin);
+      break;
+    case 2:
+      value = digitalRead(_RightPin);
+      break;
+    default:
+      value = -1000;
+      break;
+    }
+    return value;
+}
+
 int LineSensors::direction(){
   // this method whill atemt to return the direction that the line is in.
   // The method returns a value from -pi to +pi if and only if nott all sensors

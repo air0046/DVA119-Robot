@@ -19,6 +19,7 @@ bool distSens::inRange(float min, float max){
 }
 
 float distSens::getDistance(){
+  readDistance();
   return _distance;
 }
 

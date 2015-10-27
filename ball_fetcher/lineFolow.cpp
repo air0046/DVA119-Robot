@@ -47,6 +47,12 @@ void lineFolow::UpdateSpeed(){
   _motors.setSpeed(_leftMotor, _rightMotor);
 }
 
+void lineFolow::setSpeed(int left, int right){
+  _leftMotor = left;
+  _rightMotor = right;
+  UpdateSpeed();
+}
+
 void lineFolow::easyFolow(){
   readLine();
   int trip = 5;
@@ -70,6 +76,8 @@ void lineFolow::easyFolow(){
          _rightMotor = -150;
       }
       UpdateSpeed();
+      delay(5);
+
 
 
     } else if (_left < trip && _speed > trip && _right < trip){
@@ -95,9 +103,45 @@ void lineFolow::easyFolow(){
   //Serial.println(_line.rawArray());
 }
 
+void lineFolow::folowLinePid(){
+  Serial.println("Start folowLinePid");
+  pidErrorBacic();
+  _pid.run();
+  _motors.setSpeed(_pid.getleftMotor(), _pid.getrightMotor());
+
+}
+
+void lineFolow::pidErrorBacic()
+{
+  int sensor[3];
+  sensor[0]=_line.raw(0);
+  sensor[1]=_line.raw(2);
+  sensor[2]=_line.raw(1);
+  int error = 0;
+
+  if((sensor[0]==0)&&(sensor[1]==0)&&(sensor[2]==1))
+  error=2;
+  else if((sensor[0]==0)&&(sensor[1]==1)&&(sensor[2]==1))
+  error=1;
+  else if((sensor[0]==0)&&(sensor[1]==1)&&(sensor[2]==0))//&&(sensor[4]==1)&&(sensor[4]==0))
+  error=0;
+  else if((sensor[0]==1)&&(sensor[1]==1)&&(sensor[2]==0))//&&(sensor[4]==1)&&(sensor[4]==0))
+  error=-1;
+  else if((sensor[0]==1)&&(sensor[1]==0)&&(sensor[2]==0))//&&(sensor[4]==0)&&(sensor[4]==0))
+  error=-2;
+  else if((sensor[0]==0)&&(sensor[1]==0)&&(sensor[2]==0))//&&(sensor[4]==0)&&(sensor[4]==0))
+    if(error==-2) error=-2;
+    else error=2;
+  _pid.setError( error);
+
+
+
+}
+
 void lineFolow::start(){
+  Serial.println("lineFolow::start()");
   _motors.start();
-  Serial.println("Start lineFolow");
+  //Serial.println("Start lineFolow");
 }
 
 bool lineFolow::onLine(){
@@ -119,4 +163,8 @@ String lineFolow::toString(){
   temp += " _right=";
   temp += _right;
   return temp;
+}
+
+String lineFolow::motorsToStr(){
+  return _motors.toString();
 }

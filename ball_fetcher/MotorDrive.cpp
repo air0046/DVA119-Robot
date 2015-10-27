@@ -14,6 +14,7 @@ void MotorDrive::start(){
   _LeftMotorDirection = 0;
   _RightMotorSpeed = 0;
   _RightMotorDirection = 0;
+  _inied = true;
   UpdateSpeed();        // Private functinon to setTeSpeed.
 }
 
@@ -40,7 +41,7 @@ void MotorDrive::setSpeed(int left, int right){
   }
   left = abs(left);                 // absulute value in to speed vaiabels.
   right = abs(right);
-  if (left > _maxSpeed){
+  /*if (left > _maxSpeed){
     left = _maxSpeed;
   } else if (left < _minSpeed && left > 4){
     left = _minSpeed;
@@ -49,9 +50,9 @@ void MotorDrive::setSpeed(int left, int right){
     right = _maxSpeed;
   } else if (right < _minSpeed && right > 4){
     right = _minSpeed;
-  }
+  }*/
   _LeftMotorSpeed= left;
-  _RightMotorSpeed= right * 0.99;
+  _RightMotorSpeed= right * 0.75;
   //Serial.println("End setSpeed()");
   UpdateSpeed();
   //Serial.println("End UpdateSpeed()");
@@ -97,6 +98,7 @@ String MotorDrive::toString(){
   MyVal += _RightMotorSpeed;
   MyVal += " RMD: ";
   MyVal += _RightMotorDirection;
-  MyVal += " ] \n";
+  MyVal += " ] inited=";
+  if (_inied){ MyVal += " yes ";}else{ MyVal += " no ";}
   return MyVal;
 }

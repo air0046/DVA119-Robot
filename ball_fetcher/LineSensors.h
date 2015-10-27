@@ -16,8 +16,9 @@ class LineSensors {
     intArray _rightArray;
     // Conected pnins.  (7, 6, 5);
     int _LeftPin = 7;
-    int _RightPin = 5;
     int _MiddPin = 6;
+    int _RightPin = 5;
+
 
   public:
     //LineSensors(int LeftPin, int MiddPin, int RightPin);
@@ -29,5 +30,6 @@ class LineSensors {
     int right();
     String toString();
     String rawArray();
+    int raw(int LineSens);
 };
 #endif

@@ -26,6 +26,7 @@ class MotorDrive{
     int _RobotAxelRadius = 155/2; //mm
     int _maxSpeed = 250;
     int _minSpeed = 60;
+    bool _inied = false;
 
   public:
     void start();
